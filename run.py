@@ -78,6 +78,17 @@ def validate_data(values):
 #     surplus_worksheet.append_row(data)
 #     print('Surplus worksheet updated successfully.\n')
 
+
+def update_worksheet(data, worksheet):
+    """
+    Recieves a list of integers to be inserted into a worksheet
+    Update the relevant worksheet with the data provided
+    """
+    print(f'Updating {worksheet} worksheet...\n')
+    worksheet_to_update = SHEET.worksheet(worksheet)
+    worksheet_to_update.append_row(data)
+    print(f'{worksheet} worksheet updated succesfully\n')
+
 def calculate_surplus_data(sales_row):
     """
     Compare sales with stock and calculate the surplus och each item type.
@@ -97,15 +108,21 @@ def calculate_surplus_data(sales_row):
     
     return surplus_data
 
-def update_worksheet(data, worksheet):
+
+def get_last_5_entries_sales():
     """
-    Recieves a list of integers to be inserted into a worksheet
-    Update the relevant worksheet with the data provided
+    Collects columns of data from sales worksheet, collecting
     """
-    print(f'Updating {worksheet} worksheet...\n')
-    worksheet_to_update = SHEET.worksheet(worksheet)
-    worksheet_to_update.append_row(data)
-    print(f'{worksheet} worksheet updated succesfully\n')
+    sales = SHEET.worksheet('sales')
+    
+    columns = []
+    for ind in range(1, 7):
+        column = sales.col_values(ind)
+        columns.append(column[-5:])
+    
+    return columns
+
+
 
 def main():
     """
@@ -119,7 +136,9 @@ def main():
     update_worksheet(new_surplus_data, 'surplus')
 
 print('Welcome to Love Sandwiches Data Automation')
-main()
+# main()
+
+get_last_5_entries_sales()
 
 
 
